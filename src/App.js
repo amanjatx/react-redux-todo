@@ -1,22 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
+import { saveTaskToRedux } from "./redux/reducer";
 
 function App() {
+  const [input, setInput] = useState();
+  const statex = useSelector((state) => state);
+  const dispatch = useDispatch();
+
+  const changeHandler = (e) => {
+    setInput(e.target.value);
+  };
+
+  const saveToRedux = () => {
+    dispatch(saveTaskToRedux(input));
+    console.log("function is called");
+  };
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <h1>Tasks</h1>
+        <input value={input} onChange={changeHandler}></input>
+        <button onClick={saveToRedux}>Save Task</button>
+        {statex.tasks.map((task) => (
+          <h5>{task}</h5>
+        ))}
       </header>
     </div>
   );
